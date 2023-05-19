@@ -2,6 +2,7 @@ import React from "react";
 import { TextField, Button } from "@mui/material";
 import { useFormik } from "formik";
 
+import useAxios from "../../hooks/useAxios";
 import api from "../../http";
 import validationSchema from "./validationSchema";
 import styles from "./LoginForm.module.scss";
@@ -19,7 +20,10 @@ function LoginForm() {
           loginOrEmail: values.email,
           password: values.password
         })
-        .then((res) => console.log(res));
+        .then((res) => {
+          localStorage.setItem("token", JSON.stringify(res.data.token));
+          console.log(res);
+        });
     }
   });
 
