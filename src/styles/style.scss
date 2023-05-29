@@ -1,3 +1,31 @@
 @import "reset";
 @import "variables";
 @import "mixin";
+
+table {
+  border-style: none none dotted;
+  border-collapse: collapse;
+  th {
+    border: 1px solid black;
+    padding: 5px 10px;
+  }
+  td {
+    padding: 2px 3px;
+    text-align: center;
+    border-bottom: 1px solid #000;
+  }
+}
+
+// table
+
+// table td:first-child {
+//     border-left: dotted;
+// }
+
+// table td:last-child {
+//     border-right: dotted;
+// }
+
+// th {
+//   border: 1px solid #000;
+// }

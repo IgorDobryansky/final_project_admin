@@ -2,7 +2,7 @@ import axios from "axios";
 
 const api = axios.create({
   mode: "no-cors",
-  baseURL: "https://final-project-fe-10.onrender.com/api"
+  baseURL: "https://final-project-be.vercel.app/api"
 });
 
 api.interceptors.request.use((config) => {

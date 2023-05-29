@@ -1,0 +1,46 @@
+.Form {
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  // flex-direction: column;
+  flex-wrap: wrap;
+  gap: 20px;
+  // align-items: center;
+  & div {
+    width: 180px;
+  }
+  & button {
+    margin-top: 20px;
+    padding: 5px 10px;
+  }
+}
+
+.Input {
+  // width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  // &:not(:first-of-type) {
+  // margin-top: 25px;
+  // }
+  & input {
+    border: 1px solid black;
+    padding: 5px;
+  }
+  & select {
+    border: 1px solid black;
+    padding: 5px;
+  }
+  & select {
+    display: inlie-block;
+    width: 100%;
+  }
+}
+
+.InputError {
+  position: absolute;
+  top: 100%;
+  font-size: 12px;
+  color: red;
+}

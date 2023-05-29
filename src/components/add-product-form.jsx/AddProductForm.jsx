@@ -1,13 +1,18 @@
 import React from "react";
-import { TextField, Button, ButtonGroup } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
 
-import useAxios from "../../hooks/useAxios";
 import api from "../../http";
 import validationSchema from "./validationSchema";
-import styles from "./LoginForm.module.scss";
+import styles from "./Form.module.scss";
 
 function LoginForm() {
+  const { data, isError, isLoading } = useQuery({
+    queryKey: ["categories"],
+    queryFn: () => api.get("/catalog"),
+    keepPreviousData: true
+  });
+
   const initialValues = {
     name: "",
     currentPrice: "",
@@ -26,235 +31,167 @@ function LoginForm() {
     initialValues,
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
+      api.post("/products", values);
     }
   });
 
   return (
-    <form onSubmit={formik.handleSubmit} className={styles.LoginForm}>
-      <div>
-        <TextField
-          size="small"
+    <form onSubmit={formik.handleSubmit} className={styles.Form}>
+      <div className={styles.Input}>
+        <input
           type="text"
           name="name"
-          //   label="Name *"
-          variant="outlined"
-          //   margin="dense"
           value={formik.values.name}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.name && Boolean(formik.errors.name)}
-          helperText={(formik.touched.name && formik.errors.name) || "Name *"}
         />
+        <span className={styles.InputError}>
+          {(formik.touched.name && formik.errors.name) || "Name *"}
+        </span>
       </div>
-      <div>
-        <TextField
-          size="small"
+      <div className={styles.Input}>
+        <input
           type="text"
           name="currentPrice"
-          //   label="Current price *"
-          variant="outlined"
-          //   margin="dense"
           value={formik.values.currentPrice}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={
-            formik.touched.currentPrice && Boolean(formik.errors.currentPrice)
-          }
-          helperText={
-            (formik.touched.currentPrice && formik.errors.currentPrice) ||
-            "Current price *"
-          }
         />
+        <span className={styles.InputError}>
+          {(formik.touched.currentPrice && formik.errors.currentPrice) ||
+            "Current price *"}
+        </span>
       </div>
-      <div>
-        <TextField
-          size="small"
-          type="text"
-          name="categories"
-          //   label="Categories *"
-          variant="outlined"
-          //   margin="dense"
-          value={formik.values.categories}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.categories && Boolean(formik.errors.categories)}
-          helperText={
-            (formik.touched.categories && formik.errors.categories) ||
-            "Categories *"
-          }
-        />
+      <div className={styles.Input}>
+        {isLoading ? (
+          "Loading categories..."
+        ) : (
+          <select
+            name="categories"
+            value={formik.values.categories}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          >
+            <option value="">{""}</option>
+            {!isLoading &&
+              !isError &&
+              data.data.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+          </select>
+        )}
+        <span className={styles.InputError}>
+          {(formik.touched.categories && formik.errors.categories) ||
+            "Categories *"}
+        </span>
       </div>
-      <div>
-        <TextField
-          size="small"
+      <div className={styles.Input}>
+        <input
           type="text"
           name="imageUrls"
-          //   label="Image urls *"
-          variant="outlined"
-          //   margin="dense"
           value={formik.values.imageUrls}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.imageUrls && Boolean(formik.errors.imageUrls)}
-          helperText={
-            (formik.touched.imageUrls && formik.errors.imageUrls) ||
-            "Image urls *"
-          }
         />
+        <span className={styles.InputError}>
+          {(formik.touched.imageUrls && formik.errors.imageUrls) ||
+            "Image urls *"}
+        </span>
       </div>
-      <div>
-        <TextField
-          size="small"
+      <div className={styles.Input}>
+        <input
           type="text"
           name="quantity"
-          //   label="Quantity *"
-          variant="outlined"
-          //   margin="dense"
           value={formik.values.quantity}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.quantity && Boolean(formik.errors.quantity)}
-          helperText={
-            (formik.touched.quantity && formik.errors.quantity) || "Quantity *"
-          }
         />
+        <span className={styles.InputError}>
+          {(formik.touched.quantity && formik.errors.quantity) || "Quantity *"}
+        </span>
       </div>
-      <div>
-        <TextField
-          size="small"
+      <div className={styles.Input}>
+        <input
           type="text"
           name="previousPrice"
-          //   label="Previous price"
-          variant="outlined"
-          //   margin="dense"
           value={formik.values.previousPrice}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={
-            formik.touched.previousPrice && Boolean(formik.errors.previousPrice)
-          }
-          helperText={
-            (formik.touched.previousPrice && formik.errors.previousPrice) ||
-            "Previous price"
-          }
         />
+        <span className={styles.InputError}>
+          {(formik.touched.previousPrice && formik.errors.previousPrice) ||
+            "Previous price"}
+        </span>
       </div>
-      <div>
-        <TextField
-          size="small"
+      <div className={styles.Input}>
+        <input
           type="text"
           name="color"
-          //   label="Color"
-          variant="outlined"
-          //   margin="dense"
           value={formik.values.color}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.color && Boolean(formik.errors.color)}
-          helperText={(formik.touched.color && formik.errors.color) || "Color"}
         />
+        <span className={styles.InputError}>
+          {(formik.touched.color && formik.errors.color) || "Color"}
+        </span>
       </div>
-      <div>
-        <TextField
-          size="small"
+      <div className={styles.Input}>
+        <input
           type="text"
           name="sizes"
-          //   label="Size"
-          variant="outlined"
-          //   margin="dense"
           value={formik.values.sizes}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.sizes && Boolean(formik.errors.sizes)}
-          helperText={(formik.touched.sizes && formik.errors.sizes) || "Size"}
         />
+        <span className={styles.InputError}>
+          {(formik.touched.sizes && formik.errors.sizes) || "Size"}
+        </span>
       </div>
-      <div>
-        <TextField
-          size="small"
+      <div className={styles.Input}>
+        <input
           type="text"
           name="brand"
-          //   label="Brand"
-          variant="outlined"
-          //   margin="dense"
           value={formik.values.brand}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.brand && Boolean(formik.errors.brand)}
-          helperText={(formik.touched.brand && formik.errors.brand) || "Brand"}
         />
+        <span className={styles.InputError}>
+          {(formik.touched.brand && formik.errors.brand) || "Brand"}
+        </span>
       </div>
-      <div>
-        <TextField
-          size="small"
+      <div className={styles.Input}>
+        <input
           type="text"
           name="manufacturer"
-          //   label="Manufacturer"
-          variant="outlined"
-          //   margin="dense"
           value={formik.values.manufacturer}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={
-            formik.touched.manufacturer && Boolean(formik.errors.manufacturer)
-          }
-          helperText={
-            (formik.touched.manufacturer && formik.errors.manufacturer) ||
-            "Manufacturer"
-          }
         />
+        <span className={styles.InputError}>
+          {(formik.touched.manufacturer && formik.errors.manufacturer) ||
+            "Manufacturer"}
+        </span>
       </div>
-      <div>
-        <TextField
-          size="small"
+      <div className={styles.Input}>
+        <input
           type="text"
           name="manufacturerCountry"
-          //   label="Manufacturer country"
-          variant="outlined"
-          //   margin="dense"
           value={formik.values.manufacturerCountry}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={
-            formik.touched.manufacturerCountry &&
-            Boolean(formik.errors.manufacturerCountry)
-          }
-          helperText={
-            (formik.touched.manufacturerCountry &&
-              formik.errors.manufacturerCountry) ||
-            "Manufacturer country"
-          }
         />
+        <span className={styles.InputError}>
+          {(formik.touched.manufacturerCountry &&
+            formik.errors.manufacturerCountry) ||
+            "Manufacturer country"}
+        </span>
       </div>
-      <div>
-        <TextField
-          size="small"
-          type="text"
-          name="date"
-        //   label="Date"
-          variant="outlined"
-          //   margin="dense"
-          value={formik.values.date}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.date && Boolean(formik.errors.date)}
-          helperText={(formik.touched.date && formik.errors.date) || "Date"}
-        />
-      </div>
-      <ButtonGroup>
-        <Button variant="contained" type="submit" size="large">
-          Add product
-        </Button>
-        <Button
-          variant="contained"
-          type="reset"
-          size="large"
-          onClick={() => formik.resetForm()}
-        >
-          Clear
-        </Button>
-      </ButtonGroup>
+      <button type="submit">Add product</button>
+      <button type="button" onClick={() => formik.resetForm()}>
+        Clear
+      </button>
     </form>
   );
 }

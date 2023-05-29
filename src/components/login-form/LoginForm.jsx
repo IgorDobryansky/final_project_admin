@@ -1,11 +1,9 @@
 import React from "react";
-import { TextField, Button } from "@mui/material";
 import { useFormik } from "formik";
 
-import useAxios from "../../hooks/useAxios";
 import api from "../../http";
 import validationSchema from "./validationSchema";
-import styles from "./LoginForm.module.scss";
+import styles from "./Form.module.scss";
 
 function LoginForm() {
   const formik = useFormik({
@@ -22,44 +20,41 @@ function LoginForm() {
         })
         .then((res) => {
           localStorage.setItem("token", JSON.stringify(res.data.token));
-          console.log(res);
         });
     }
   });
 
   return (
-    <form onSubmit={formik.handleSubmit} className={styles.LoginForm}>
-      <div>
-        <TextField
+    <form onSubmit={formik.handleSubmit} className={styles.Form}>
+      <div className={styles.Input}>
+        <input
+          id="email"
           type="text"
           name="email"
-          label="Email *"
-          variant="outlined"
-          margin="normal"
           value={formik.values.email}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.email && Boolean(formik.errors.email)}
-          helperText={formik.touched.email && formik.errors.email}
         />
+        <span className={styles.InputError}>
+          {(formik.touched.email && formik.errors.email) || "Email *"}
+        </span>
       </div>
-      <div>
-        <TextField
+      <div className={styles.Input}>
+        <input
+          id="password"
           type="password"
           name="password"
-          label="Password *"
-          variant="outlined"
-          margin="normal"
           value={formik.values.password}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.password && Boolean(formik.errors.password)}
-          helperText={formik.touched.password && formik.errors.password}
         />
+        <span className={styles.InputError}>
+          {(formik.touched.password && formik.errors.password) || "Password *"}
+        </span>
       </div>
-      <Button variant="contained" type="submit" size="large">
+      <button type="submit" size="large">
         Login
-      </Button>
+      </button>
     </form>
   );
 }

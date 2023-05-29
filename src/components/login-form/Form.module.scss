@@ -1,4 +1,4 @@
-.LoginForm {
+.Form {
   width: fit-content;
   margin: 0 auto;
   display: flex;
@@ -10,17 +10,17 @@
   }
 }
 
-.InputField {
+.Input {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   &:not(:first-of-type) {
-    margin-top: 15px;
+    margin-top: 25px;
   }
   & input {
     border: 1px solid black;
-    padding: 3px;
+    padding: 5px;
   }
 }
 
